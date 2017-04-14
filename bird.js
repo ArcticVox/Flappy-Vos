@@ -3,10 +3,10 @@ function Bird(img) {
   this.y = height/2;
   this.img = img;
 
-  this.gravity = 0.8;
+  this.gravity = width * 0.002;
   this.velocity = 0;
-  this.lift = -20;
-  this.r = 20;
+  this.lift = width * 0.05;
+  this.r = width * 0.05;
 
   this.rotation = 0;
 
@@ -23,7 +23,11 @@ function Bird(img) {
 
   }
   this.up = function() {
-    this.velocity += this.lift;
+    this.velocity -= this.lift;
+    var rng = floor(random(vosSound.length));
+    if (vosSound[rng].isLoaded()) {
+      vosSound[rng].play();
+    }
   }
   this.update = function() {
     this.velocity += this.gravity;
@@ -39,6 +43,6 @@ function Bird(img) {
       this.y = 0;
       this.velocity = 0;
     }
-    this.velocity = constrain(this.velocity, -20, 20);
+    this.velocity = constrain(this.velocity, -this.lift, this.lift);
   }
 }

@@ -1,5 +1,10 @@
 var bird;
 var pipes = [];
+var mobile = false;
+var textResponsive = [];
+var textResponsiveWH = [];
+var firsttap = true;
+
 // var ai;
 var score = 0;
 var highscore = 0;
@@ -23,6 +28,10 @@ function preload() {
   voskopyey = loadImage('assets/images/voskopyey.png');
   litEmoji = loadImage('assets/images/lit.png');
   scoreIcon = loadImage('assets/images/voscoin.png');
+}
+
+
+function setup() {
   pipePass = loadSound('assets/sounds/noice.mp3');
   dedSounds[0] = loadSound('assets/sounds/bob.mp3');
   dedSounds[1] = loadSound('assets/sounds/jammerman.mp3');
@@ -34,14 +43,31 @@ function preload() {
   vosSound[3] = loadSound('assets/sounds/vosounds/vos5.mp3');
   vosSound[4] = loadSound('assets/sounds/vosounds/vos6.mp3');
   vosSound[5] = loadSound('assets/sounds/vosounds/vos7.mp3');
-}
-
-
-function setup() {
-  if (window.innerWidth <= 600) {
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
     createCanvas(window.innerWidth, window.innerHeight);
+    document.body.addEventListener('touchmove',function(e){
+        e.preventDefault();
+    });
+    mobile = true;
+    textResponsive[0] = window.innerWidth * 0.07;
+    textResponsive[1] = textResponsive[0] * 0.67;
+    textResponsive[2] = textResponsive[0] * 0.5;
+    textResponsive[3] = textResponsive[0] * 1.78;
+    textResponsiveWH[0] = window.innerWidth * 0.16;
+    textResponsiveWH[1] = window.innerWidth * 0.20;
+    textResponsiveWH[2] = window.innerWidth / 1.5;
+    textResponsiveWH[3] = window.innerWidth * 0.60;
+    document.getElementById('website').innerHTML = "www.arcticvox.com - geen audio op iphone, want apple houd niet van koele tjoens.";
   } else {
     createCanvas(400, 600);
+    textResponsive[0] = 28;
+    textResponsive[1] = 18;
+    textResponsive[2] = 14;
+    textResponsive[3] = 50;
+    textResponsiveWH[0] = width * 0.25;
+    textResponsiveWH[1] = width * 0.25;
+    textResponsiveWH[2] = width / 2;
+    textResponsiveWH[3] = width / 2;
   }
   bird = new Bird(voskop);
   // ai = new Ai();
@@ -57,8 +83,10 @@ function draw() {
       pipes[i].update();
       if (pipes[i].hits(bird)) {
         gameover = true;
-
-        dedSounds[floor(random(dedSounds.length))].play();
+        var rng = floor(random(dedSounds.length));
+        if (dedSounds[rng].isLoaded()) {
+          dedSounds[rng].play();
+        }
       }
       if (pipes[i].offscreen()) {
         pipes.splice(i, 1);
@@ -72,7 +100,7 @@ function draw() {
   bird.show();
 
   if (!gameover && frameCount % 100 == 0) {
-    pipes.push(new Pipe(0.05 * score, litEmoji));
+    pipes.push(new Pipe((width * 0.000125) * score, litEmoji));
   }
   if (gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);
@@ -87,39 +115,49 @@ function draw() {
   } else {
     endtop = lerp(endtop, -(height * 0.4) - 100, 0.2);
   }
-  rect(width * 0.25, endtop, width/2, height * 0.4);
+
+  rect(textResponsiveWH[0], endtop, textResponsiveWH[2], height * 0.4);
   push();
   textAlign(CENTER);
   fill(0);
-  textSize(28);
-  text("druk knop.", width * 0.25, endtop + 50, width/2, height * 0.15);
-  textSize(18);
-  text("Лорем ипсум долор сит амет", width * 0.25, endtop + height * 0.2 + 25, width/2, height * 0.2);
+  textSize(textResponsive[0]);
+  text("druk knop.", textResponsiveWH[1], endtop + 50, textResponsiveWH[3], height * 0.15);
+  textSize(textResponsive[1]);
+  text("Лорем ипсум долор сит амет", textResponsiveWH[1], endtop + height * 0.2 + 25, textResponsiveWH[3], height * 0.2);
   pop();
 
   push();
-  textSize(14);
+  textSize(textResponsive[2]);
   text('Highscore: ' + highscore, 4, 16);
   pop();
-  textSize(50);
+  textSize(textResponsive[3]);
   var scoretw = textWidth(score.toString());
   translate(-((scoreIcon.width * 0.2) + scoretw) / 2, 0);
-  image(scoreIcon, width/2 - scoreIcon.width * 0.2, 30, scoreIcon.width * 0.4, scoreIcon.height * 0.4);
-  text(score, width/2 + scoreIcon.width * 0.2, 75);
+  image(scoreIcon, width/2 - scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 10, scoreIcon.width * 0.4, scoreIcon.height * 0.4);
+  text(score, width/2 + scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 50);
 }
 
 
 function keyPressed() {
+  restart();
+  if (!gameover && key === ' ') {
+    bird.up();
+  }
+}
+
+function touchStarted() {
+
+  restart();
+  if (!gameover) {
+    bird.up();
+  }
+}
+function restart() {
   if (canRestart && gameover) {
     gameover = false;
     canRestart = false;
     pipes = [];
     bird = new Bird(voskop);
     score = 0;
-  }
-  if (!gameover && key === ' ') {
-    bird.up();
-    // bang.play();
-    vosSound[floor(random(vosSound.length))].play();
   }
 }
