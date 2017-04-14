@@ -3,8 +3,8 @@ function Pipe(spd, img) {
   this.top = random(20, height/2);
   this.bottom = height - (this.top + this.spacing);
   this.x = width;
-  this.w = 50;
-  this.speed = 3 + spd;
+  this.w = width * 0.125;
+  this.speed = (width * 0.0075) + spd;
   this.highlight = false;
   this.swap = false;
   this.passed = false;
@@ -27,7 +27,9 @@ function Pipe(spd, img) {
       if (score > highscore) {
         highscore = score;
       }
-      pipePass.play();
+      if (pipePass.isLoaded()) {
+        pipePass.play();
+      }
     }
     this.highlight = false;
     return false;
