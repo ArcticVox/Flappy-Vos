@@ -35,20 +35,6 @@ function Pipe(spd, img) {
     return false;
   }
   this.show = function() {
-    fill(255);
-    if (this.highlight) {
-      if (this.swap) {
-        fill(255,0,0);
-      } else {
-        fill(0,0,255);
-      }
-      if (frameCount % 15 == 0) {
-        this.swap = !this.swap;
-      }
-      rect(this.x, 0, this.w, this.top);
-      rect(this.x, height - this.bottom, this.w, this.bottom);
-
-    }
 
     // rect(this.x, 0, this.w, this.top);
     for (var i = 0; i < this.topcars; i++) {
