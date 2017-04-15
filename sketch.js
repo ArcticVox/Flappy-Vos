@@ -22,6 +22,7 @@ var dedSounds = [];
 var vosSound = [];
 var litEmoji;
 var scoreIcon;
+var gameoverMsg = "jammer man";
 function preload() {
   voskop = loadImage('assets/images/voskop.png');
   voskopded = loadImage('assets/images/voskopded.png');
@@ -121,7 +122,19 @@ function draw() {
   textAlign(CENTER);
   fill(0);
   textSize(textResponsive[0]);
-  text("druk knop.", textResponsiveWH[1], endtop + 50, textResponsiveWH[3], height * 0.15);
+
+  if(score == 0){
+    gameoverMsg = "Echt waar 0 punten?!?" + "😂";
+  }
+  else if(score < 10){
+    gameoverMsg = "Alweer onder de 10?? ";
+  }
+
+  else{
+    gameoverMsg = "Je score is " + score;
+  }
+
+  text(gameoverMsg, textResponsiveWH[1], endtop + 50, textResponsiveWH[3], height * 0.15);
   textSize(textResponsive[1]);
   text("Лорем ипсум долор сит амет", textResponsiveWH[1], endtop + height * 0.2 + 25, textResponsiveWH[3], height * 0.2);
   pop();
@@ -135,6 +148,8 @@ function draw() {
   translate(-((scoreIcon.width * 0.2) + scoretw) / 2, 0);
   image(scoreIcon, width/2 - scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 10, scoreIcon.width * 0.4, scoreIcon.height * 0.4);
   text(score, width/2 + scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 50);
+
+
 }
 
 
