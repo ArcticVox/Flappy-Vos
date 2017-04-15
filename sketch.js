@@ -123,10 +123,12 @@ function draw() {
   fill(0);
   textSize(textResponsive[0]);
 
+
+  //death screen
   if(score == 0){
-    gameoverMsg = "Echt waar 0 punten?!?" + "😂";
+    gameoverMsg = "Echt waar? 0 punten?!?" + "😂";
   }
-  else if(score < 10){
+  else if(score < 9){
     gameoverMsg = "Alweer onder de 10?? ";
   }
 
@@ -148,8 +150,6 @@ function draw() {
   translate(-((scoreIcon.width * 0.2) + scoretw) / 2, 0);
   image(scoreIcon, width/2 - scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 10, scoreIcon.width * 0.4, scoreIcon.height * 0.4);
   text(score, width/2 + scoreIcon.width * 0.2, scoreIcon.height * 0.4 + 50);
-
-
 }
 
 
