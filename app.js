@@ -22,7 +22,9 @@ function newConnection(socket) {
   socket.on('disconnect', stopConnection);
 
 
+  function addPipe() {
 
+  }
   function stopConnection() {
     connected--;
     io.emit('totalUsers', connected);

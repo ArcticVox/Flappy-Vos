@@ -102,7 +102,7 @@ function draw() {
   bird.show();
 
   if (!gameover && frameCount % 100 == 0) {
-    pipes.push(new Pipe((width * 0.000125) * score, litEmoji));
+    pipes.push(new Pipe(litEmoji));
   }
   if (gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);

@@ -1,10 +1,10 @@
-function Pipe(spd, img) {
+function Pipe(img) {
   this.spacing = random(height * 0.20, height * 0.30);
   this.top = random(20, height/2);
   this.bottom = height - (this.top + this.spacing);
   this.x = width;
   this.w = width * 0.125;
-  this.speed = (width * 0.0075) + spd;
+  this.speed = (width * 0.0075);
   this.highlight = false;
   this.swap = false;
   this.passed = false;
