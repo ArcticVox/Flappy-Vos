@@ -6,12 +6,16 @@ app.use(express.static('public'));
 var socket = require('socket.io');
 var io = socket(server);
 
-var connected;
+var connected = 0;
 
 io.sockets.on('connection', newConnection);
 io.sockets.on('disconnect', stopConnection);
 function newConnection(socket) {
-  connected = io.sockets.clients().length;
+  connected++;
   io.emit('totalUsers', connected);
   console.log('new connection!');
+}
+function stopConnection() {
+  connected--;
+  io.emit('totalUsers', connected);
 }

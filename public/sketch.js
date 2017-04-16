@@ -145,6 +145,8 @@ function draw() {
   push();
   textSize(textResponsive[2]);
   text('Highscore: ' + highscore, 4, 16);
+  var twuc = textWidth('Users connected: ' + connectedPlayers);
+  text('Users connected: ' + connectedPlayers, width - 4 - twuc, 16);
   pop();
   textSize(textResponsive[3]);
   var scoretw = textWidth(score.toString());
