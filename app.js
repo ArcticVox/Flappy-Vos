@@ -8,14 +8,24 @@ var io = socket(server);
 
 var connected = 0;
 
+var serverPipes = [];
+
 io.sockets.on('connection', newConnection);
-io.sockets.on('disconnect', stopConnection);
 function newConnection(socket) {
   connected++;
   io.emit('totalUsers', connected);
   console.log('new connection!');
-}
-function stopConnection() {
-  connected--;
-  io.emit('totalUsers', connected);
+  for (var i = 0; i < 100; i++) {
+    serverPipes.push()
+  }
+
+  socket.on('disconnect', stopConnection);
+
+
+
+  function stopConnection() {
+    connected--;
+    io.emit('totalUsers', connected);
+  }
+
 }
