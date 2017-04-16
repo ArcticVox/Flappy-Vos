@@ -1,0 +1,26 @@
+{
+  "name": "flappy-vox-multiplayer",
+  "version": "1.0.0",
+  "description": "Flappy vox multiplayer p5 js",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.2",
+    "http-server": "^0.9.0",
+    "node.js": "^0.0.0",
+    "socket.io": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArcticVox/Flappy-Vos.git"
+  },
+  "author": "Ian Hogers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArcticVox/Flappy-Vos/issues"
+  },
+  "homepage": "https://github.com/ArcticVox/Flappy-Vos#readme"
+}
