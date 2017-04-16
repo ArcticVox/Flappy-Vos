@@ -1,3 +1,5 @@
+var socket;
+
 var bird;
 var pipes = [];
 var mobile = false;
@@ -73,6 +75,7 @@ function setup() {
   bird = new Bird(voskop);
   // ai = new Ai();
   endtop = -(height * 0.4) - 100;
+  socket = io.connect('http://localhost:3000');
 }
 
 function draw() {
