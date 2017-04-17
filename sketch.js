@@ -25,6 +25,11 @@ var voskoppie = [];
 var litEmoji;
 var scoreIcon;
 var gameoverMsg = "jammer man";
+var bg;
+
+var button;
+var restartButton;
+
 function preload() {
   voskop = loadImage('assets/images/voskop.png');
   voskopded = loadImage('assets/images/voskopded.png');
@@ -33,16 +38,25 @@ function preload() {
   voskopyey = loadImage('assets/images/voskopyey.png');
   litEmoji = loadImage('assets/images/lit.png');
   scoreIcon = loadImage('assets/images/voscoin.png');
+  bg = loadImage('assets/images/bg.png')
 
-  voskoppie[0] = loadImage('assets/images/voskop.png');
-  voskoppie[1] = loadImage('assets/images/voskopyey.png');
-  voskoppie[2] = loadImage('assets/images/voskopemoji.png');
-  voskoppie[3] = loadImage('assets/images/voskopemoji2.png');
-  voskoppie[4] = loadImage('assets/images/voskopsnor.png');
+  // voskoppie[0] = loadImage('assets/images/voskop.png');
+  // voskoppie[1] = loadImage('assets/images/voskopyey.png');
+  // voskoppie[2] = loadImage('assets/images/voskopemoji.png');
+  // voskoppie[3] = loadImage('assets/images/voskopemoji2.png');
+  // voskoppie[4] = loadImage('assets/images/voskopsnor.png');
+  // voskoppie[0] = loadImage('assets/images/voskoptrump.png');
+  voskoppie[0] = loadImage('assets/images/voskopthot.png');
+  // voskoppie[0] = loadImage('assets/images/voskopwest.png');
 }
 
 
 function setup() {
+
+  button = createButton('test');
+  button.position(10, 10);
+  button.mousePressed(test);
+
   pipePass = loadSound('assets/sounds/noice.mp3');
   dedSounds[0] = loadSound('assets/sounds/bob.mp3');
   dedSounds[1] = loadSound('assets/sounds/jammerman.mp3');
@@ -86,7 +100,7 @@ function setup() {
 }
 
 function draw() {
-  background(120);
+  background(bg);
   noStroke();
   for (var i = pipes.length-1; i >= 0; i--) {
     pipes[i].show();
@@ -183,10 +197,11 @@ function keyPressed() {
 }
 
 function touchStarted() {
-
-  restart();
-  if (!gameover) {
-    bird.up();
+  if(mobile){
+    restart();
+    if (!gameover) {
+      bird.up();
+    }
   }
 }
 function restart() {
@@ -198,4 +213,8 @@ function restart() {
     score = 0;
     bird.img = voskoppie[floor(random(voskoppie.length))];
   }
+}
+
+function test(){
+  bird.img = voskopemoji;
 }
