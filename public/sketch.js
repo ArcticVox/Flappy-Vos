@@ -10,7 +10,6 @@ var firsttap = true;
 // var ai;
 var score = 0;
 var highscore = 0;
-var gameover = false;
 var canRestart = false;
 var endtop = 0;
 
@@ -72,7 +71,7 @@ function setup() {
     textResponsiveWH[2] = width / 2;
     textResponsiveWH[3] = width / 2;
   }
-  bird = new Bird(voskop);
+  bird = new Bird(voskop, id);
   // ai = new Ai();
   endtop = -(height * 0.4) - 100;
   voskopSize = bird.r;
@@ -87,10 +86,10 @@ function draw() {
   noStroke();
   for (var i = pipes.length-1; i >= 0; i--) {
     pipes[i].show();
-    if (!gameover) {
+    if (!bird.gameover) {
       pipes[i].update();
       if (pipes[i].hits(bird)) {
-        gameover = true;
+        bird.gameover = true;
         var rng = floor(random(dedSounds.length));
         clearInterval(pipeInterval);
         if (dedSounds[rng].isLoaded()) {
@@ -102,20 +101,25 @@ function draw() {
       }
     }
   }
-  for (var i = 0; i < serverPlayers.length; i++) {
-    if (!serverPlayers[i].gameover) {
-      serverPlayers[i].update();
+  if (serverPlayers.length > 0) {
+    for (var i = 0; i < serverPlayers.length; i++) {
+      if (serverPlayers[i] === undefined) {
+        serverPlayers.splice(i, 1);
+      }
+      if (!serverPlayers[i].gameover) {
+        serverPlayers[i].update();
+      }
+      serverPlayers[i].show();
     }
-    serverPlayers[i].show();
   }
-  if (!gameover) {
+  if (!bird.gameover) {
     bird.update();
     // ai.control(bird, pipes);
   }
   bird.show();
 
   // checkForNewPipes();
-  if (gameover) {
+  if (bird.gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);
     bird.img = voskopded;
     bird.r = voskopSize * 2;
@@ -169,25 +173,25 @@ function draw() {
 
 function keyPressed() {
   restart();
-  if (!gameover && key === ' ') {
-    bird.up();
+  if (!bird.gameover && key === ' ') {
+    bird.up(true);
   }
 }
 
 function touchStarted() {
 
   restart();
-  if (!gameover) {
-    bird.up();
+  if (!bird.gameover) {
+    bird.up(true);
   }
 }
 function restart() {
-  if (canRestart && gameover) {
+  if (canRestart && bird.gameover) {
     pipes = [];
-    bird = new Bird(voskop);
+    bird = new Bird(voskop, id);
     score = 0;
     currentPipe = 0;
-    gameover = false;
+    bird.gameover = false;
     canRestart = false;
     pipeInterval = setInterval(function() {
       checkForNewPipes();
@@ -196,8 +200,7 @@ function restart() {
 }
 
 function checkForNewPipes() {
-  if (!gameover) {
-    console.log(currentPipe);
+  if (!bird.gameover) {
     if (currentPipe < serverPipes.length - 1) {
       pipes.push(serverPipes[currentPipe]);
       currentPipe ++;

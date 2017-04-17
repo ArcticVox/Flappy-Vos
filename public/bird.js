@@ -1,14 +1,14 @@
-function Bird(img) {
+function Bird(img, id) {
   this.x = 50;
   this.y = height/2;
   this.img = img;
-
+  this.gameover = false;
   this.gravity = width * 0.002;
   this.velocity = 0;
   this.lift = width * 0.05;
   this.r = width * 0.05;
-
   this.rotation = 0;
+  this.id = id;
 
   this.relativeSpeed = (width * 0.0075);
   this.relativeLocation = 0;
@@ -24,11 +24,14 @@ function Bird(img) {
     fill(255);
 
   }
-  this.up = function() {
+  this.up = function(bool) {
     this.velocity -= this.lift;
     var rng = floor(random(vosSound.length));
     if (vosSound[rng].isLoaded()) {
       vosSound[rng].play();
+    }
+    if (bool) {
+      socket.emit('playerUp', bird.id);
     }
   }
   this.update = function() {
@@ -55,12 +58,14 @@ function collectPlayerData(bird) {
     relativeSpeed: bird.relativeSpeed,
     y: bird.y,
     velocity: bird.velocity,
+    gameover: bird.gameover,
+    id: bird.id
   }
   socket.emit('newPlayer', data);
 }
 
 function setPlayerData(data) {
-  var playerWithSetData = new Bird(voskop);
+  var playerWithSetData = new Bird(voskop, data.id);
   var crl = data.relativeLocation / playerWithSetData.relativeLocation; //converted relativeLocation
   playerWithSetData.relativeLocation = data.relativeLocation * crl;
 
@@ -70,5 +75,6 @@ function setPlayerData(data) {
   var cv = data.y / playerWithSetData.y; //converted Velocity
   playerWithSetData.velocity = data.velocity * cv;
 
+  playerWithSetData.gameover = data.gameover;
   return playerWithSetData;
 }
