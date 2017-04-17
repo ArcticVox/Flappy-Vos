@@ -30,6 +30,7 @@ function newConnection(socket) {
   socket.on('newPipe', addPipe);
   socket.on('newPlayer', addPlayer);
   socket.on('playerUp', playerPressUp);
+  socket.on('playerDied', playerDeathState);
 
 
   function addPipe(data) {
@@ -46,6 +47,9 @@ function newConnection(socket) {
   }
   function playerPressUp(data) {
     socket.broadcast.emit('birdUpById', data);
+  }
+  function playerDeathState(data) {
+    socket.broadcast.emit('setPlayerStateDeath', data);
   }
   function stopConnection(data) {
     connected--;

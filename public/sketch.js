@@ -90,6 +90,7 @@ function draw() {
       pipes[i].update();
       if (pipes[i].hits(bird)) {
         bird.gameover = true;
+        socket.emit('playerDied', {id: id, bool: true});
         var rng = floor(random(dedSounds.length));
         clearInterval(pipeInterval);
         if (dedSounds[rng].isLoaded()) {
@@ -187,6 +188,7 @@ function touchStarted() {
 }
 function restart() {
   if (canRestart && bird.gameover) {
+    socket.emit('playerDied', {id: id, bool: false});
     pipes = [];
     bird = new Bird(voskop, id);
     score = 0;

@@ -11,6 +11,7 @@ function socketConnection() {
   socket.on('serverPipesUpdated', setNewServerPipes);
   socket.on('serverPlayersUpdated', setNewPlayers);
   socket.on('needPlayerData', setIdClient);
+  socket.on('setPlayerStateDeath', setPlayerStateDeath);
   // socket.on('setId', setIdClient);
 }
 
@@ -26,21 +27,28 @@ function setNewPlayers(data) {
   for (var i = 0; i < data.length; i++) {
     // console.log(socket.id + ' ' + data[i].id);
     if (data[i].id !== socket.id) {
-      serverPlayers[i] = setPlayerData(data[i]); //bird.js
+      serverPlayers[i] = setPlayerData(data[i]);
+      console.log(data[i]); //bird.js
     }
   }
 }
 function setIdClient(data) {
 
   id = data;
-
   bird.id = id;
   console.log(id);
+}
+function setPlayerStateDeath(data) {
+  for (var i = 0; i < serverPlayers.length; i++) {
+    if (serverPlayers[i].id === data.id) {
+      serverPlayers[i].gameover = data.bool;
+      break;
+    }
+  }
 }
 function birdUpId(data) {
   for (var i = 0; i < serverPlayers.length; i++) {
     if (serverPlayers[i].id === data) {
-      console.log(data);
       serverPlayers[i].up(false);
       break;
     }

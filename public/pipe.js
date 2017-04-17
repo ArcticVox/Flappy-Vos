@@ -14,7 +14,6 @@ function Pipe(img) {
   this.hits = function(bird) {
     if (bird.y < this.top + bird.r || bird.y > height - this.bottom - bird.r) {
       if (bird.x > this.x - bird.r && bird.x < this.x + this.w + bird.r) {
-        this.highlight = true;
         return true;
       }
     }
