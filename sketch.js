@@ -40,14 +40,14 @@ function preload() {
   scoreIcon = loadImage('assets/images/voscoin.png');
   bg = loadImage('assets/images/bg.png')
 
-  // voskoppie[0] = loadImage('assets/images/voskop.png');
-  // voskoppie[1] = loadImage('assets/images/voskopyey.png');
-  // voskoppie[2] = loadImage('assets/images/voskopemoji.png');
-  // voskoppie[3] = loadImage('assets/images/voskopemoji2.png');
-  // voskoppie[4] = loadImage('assets/images/voskopsnor.png');
-  // voskoppie[0] = loadImage('assets/images/voskoptrump.png');
-  voskoppie[0] = loadImage('assets/images/voskopthot.png');
-  // voskoppie[0] = loadImage('assets/images/voskopwest.png');
+  voskoppie[0] = loadImage('assets/images/voskop.png');
+  voskoppie[1] = loadImage('assets/images/voskopyey.png');
+  voskoppie[2] = loadImage('assets/images/voskopemoji.png');
+  voskoppie[3] = loadImage('assets/images/voskopemoji2.png');
+  voskoppie[4] = loadImage('assets/images/voskopsnor.png');
+  voskoppie[5] = loadImage('assets/images/voskoptrump.png');
+  voskoppie[6] = loadImage('assets/images/voskopthot.png');
+  voskoppie[7] = loadImage('assets/images/voskopwest.png');
 }
 
 
