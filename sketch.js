@@ -28,7 +28,9 @@ var gameoverMsg = "jammer man";
 var bg;
 
 var button;
-var restartButton;
+var randomVosButton;
+
+var gamestarted = false;
 
 function preload() {
   voskop = loadImage('assets/images/voskop.png');
@@ -53,9 +55,19 @@ function preload() {
 
 function setup() {
 
-  button = createButton('test');
+
+
+  button = createButton('start');
   button.position(10, 10);
-  button.mousePressed(test);
+  button.mousePressed(start);
+
+  randomVosButton = createButton('Random Vos');
+  randomVosButton.position(10, 30);
+  randomVosButton.mousePressed(randomVos);
+  randomVosButton.class('startknop');
+
+
+
 
   pipePass = loadSound('assets/sounds/noice.mp3');
   dedSounds[0] = loadSound('assets/sounds/bob.mp3');
@@ -104,7 +116,7 @@ function draw() {
   noStroke();
   for (var i = pipes.length-1; i >= 0; i--) {
     pipes[i].show();
-    if (!gameover) {
+    if (!gameover && gamestarted == true) {
       pipes[i].update();
       if (pipes[i].hits(bird)) {
         gameover = true;
@@ -118,17 +130,18 @@ function draw() {
       }
     }
   }
-  if (!gameover) {
+  if (!gameover && gamestarted == true) {
     bird.update();
 
     // ai.control(bird, pipes);
   }
   bird.show();
 
-  if (!gameover && frameCount % 100 == 0) {
+  if (!gameover && frameCount % 100 == 0 && gamestarted == true) {
     pipes.push(new Pipe((width * 0.000125) * score, litEmoji));
   }
   if (gameover) {
+    gamestarted = false;
     endtop = lerp(endtop, height * 0.3, 0.2);
 
     if (this.swap) {
@@ -211,10 +224,18 @@ function restart() {
     pipes = [];
     bird = new Bird(voskop);
     score = 0;
-    bird.img = voskoppie[floor(random(voskoppie.length))];
+    // bird.img = voskoppie[floor(random(voskoppie.length))];
   }
 }
 
 function test(){
   bird.img = voskopemoji;
+}
+
+function start(){
+  gamestarted = true;
+}
+
+function randomVos() {
+ bird.img = voskoppie[floor(random(voskoppie.length))];
 }
