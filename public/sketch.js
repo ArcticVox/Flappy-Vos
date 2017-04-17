@@ -102,6 +102,12 @@ function draw() {
       }
     }
   }
+  for (var i = 0; i < serverPlayers.length; i++) {
+    if (!serverPlayers[i].gameover) {
+      serverPlayers[i].update();
+    }
+    serverPlayers[i].show();
+  }
   if (!gameover) {
     bird.update();
     // ai.control(bird, pipes);
@@ -150,8 +156,8 @@ function draw() {
   push();
   textSize(textResponsive[2]);
   text('Highscore: ' + highscore, 4, 16);
-  var twuc = textWidth('Users connected: ' + connectedPlayers);
-  text('Users connected: ' + connectedPlayers, width - 4 - twuc, 16);
+  var twuc = textWidth('Users connected: ' + totalPlayers);
+  text('Users connected: ' + totalPlayers, width - 4 - twuc, 16);
   pop();
   textSize(textResponsive[3]);
   var scoretw = textWidth(score.toString());
@@ -202,31 +208,4 @@ function checkForNewPipes() {
       currentPipe ++;
     }
   }
-}
-
-function collectPipeData(pipe) {
-  var data = {
-    spacing: pipe.spacing,
-    top: pipe.top,
-    bottom: pipe.bottom,
-    w: pipe.w,
-    speed: pipe.speed,
-    pipeImageHeight: pipe.pipeImageHeight,
-    topimages: pipe.topimages,
-    bottomimages: pipe.bottomimages
-  }
-  socket.emit('newPipe', data);
-
-}
-function setPipeData(data) {
-  var pipeWithSetData = new Pipe(litEmoji);
-  pipeWithSetData.spacing = data.spacing
-  pipeWithSetData.top = data.top,
-  pipeWithSetData.bottom = data.bottom,
-  pipeWithSetData.w = data.w,
-  pipeWithSetData.speed = data.speed,
-  pipeWithSetData.pipeImageHeight = data.pipeImageHeight,
-  pipeWithSetData.topimages = data.topimages,
-  pipeWithSetData.bottomimages = data.bottomimages
-  return pipeWithSetData;
 }

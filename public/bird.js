@@ -10,6 +10,8 @@ function Bird(img) {
 
   this.rotation = 0;
 
+  this.relativeSpeed = (width * 0.0075);
+  this.relativeLocation = 0;
   this.show = function() {
     push();
     // ellipse(this.x, this.y, this.r*2, this.r*2);
@@ -45,4 +47,28 @@ function Bird(img) {
     }
     this.velocity = constrain(this.velocity, -this.lift, this.lift);
   }
+}
+
+
+function collectPlayerData(bird) {
+  var data = {
+    relativeSpeed: bird.relativeSpeed,
+    y: bird.y,
+    velocity: bird.velocity,
+  }
+  socket.emit('newPlayer', data);
+}
+
+function setPlayerData(data) {
+  var playerWithSetData = new Bird(voskop);
+  var crl = data.relativeLocation / playerWithSetData.relativeLocation; //converted relativeLocation
+  playerWithSetData.relativeLocation = data.relativeLocation * crl;
+
+  var cy = data.y / playerWithSetData.y; //converted Y
+  playerWithSetData.y = data.y * cy;
+
+  var cv = data.y / playerWithSetData.y; //converted Velocity
+  playerWithSetData.velocity = data.velocity * cv;
+
+  return playerWithSetData;
 }

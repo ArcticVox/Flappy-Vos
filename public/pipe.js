@@ -55,3 +55,32 @@ function Pipe(img) {
 
   }
 }
+
+
+function collectPipeData(pipe) {
+  var data = {
+    spacing: pipe.spacing,
+    top: pipe.top,
+    bottom: pipe.bottom,
+    w: pipe.w,
+    speed: pipe.speed,
+    pipeImageHeight: pipe.pipeImageHeight,
+    topimages: pipe.topimages,
+    bottomimages: pipe.bottomimages
+  }
+  socket.emit('newPipe', data);
+
+}
+
+function setPipeData(data) {
+  var pipeWithSetData = new Pipe(litEmoji);
+  pipeWithSetData.spacing = data.spacing
+  pipeWithSetData.top = data.top,
+  pipeWithSetData.bottom = data.bottom,
+  pipeWithSetData.w = data.w,
+  pipeWithSetData.speed = data.speed,
+  pipeWithSetData.pipeImageHeight = data.pipeImageHeight,
+  pipeWithSetData.topimages = data.topimages,
+  pipeWithSetData.bottomimages = data.bottomimages
+  return pipeWithSetData;
+}
