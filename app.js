@@ -18,9 +18,9 @@ function newConnection(socket) {
     io.to(socket.id).emit('serverPipesUpdated', storedPipes);
   }
   io.to(socket.id).emit('needPlayerData', socket.id);
-  if (connectedPlayers.length > 0) {
-    io.to(socket.id).emit('serverPlayersUpdated', connectedPlayers);
-  }
+  // if (connectedPlayers.length > 0) {
+  //   io.to(socket.id).emit('serverPlayersUpdated', connectedPlayers);
+  // }
   // socket.broadcast.to(socket.id).emit('setId', socket.id);
   connected++;
   io.emit('totalUsers', connected);
@@ -31,6 +31,7 @@ function newConnection(socket) {
   socket.on('newPlayer', addPlayer);
   socket.on('playerUp', playerPressUp);
   socket.on('playerDied', playerDeathState);
+  socket.on('resetBird', resetBirds);
 
 
   function addPipe(data) {
@@ -41,15 +42,17 @@ function newConnection(socket) {
   function addPlayer(data) {
     data.id = socket.id;
     connectedPlayers.push(data);
-    console.log(data.id);
-
     io.emit('serverPlayersUpdated', connectedPlayers);
+    console.log(connectedPlayers);
   }
   function playerPressUp(data) {
     socket.broadcast.emit('birdUpById', data);
   }
   function playerDeathState(data) {
     socket.broadcast.emit('setPlayerStateDeath', data);
+  }
+  function resetBirds(data) {
+    socket.broadcast.emit('resetOtherPlayer', data);
   }
   function stopConnection(data) {
     connected--;
@@ -59,7 +62,6 @@ function newConnection(socket) {
           break;
         }
       }
-      console.log(connectedPlayers);
     io.emit('serverPlayersUpdated', connectedPlayers);
     io.emit('totalUsers', connected);
   }

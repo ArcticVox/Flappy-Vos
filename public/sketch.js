@@ -190,7 +190,10 @@ function restart() {
   if (canRestart && bird.gameover) {
     socket.emit('playerDied', {id: id, bool: false});
     pipes = [];
-    bird = new Bird(voskop, id);
+    bird.resetBird();
+    for (var i = 0; i < serverPipes.length; i++) {
+      serverPipes[i].x = width;
+    }
     score = 0;
     currentPipe = 0;
     bird.gameover = false;

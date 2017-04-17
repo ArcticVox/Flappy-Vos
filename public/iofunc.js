@@ -6,13 +6,13 @@ var id = 'no-id';
 function socketConnection() {
   socket = io.connect('http://192.168.1.8:3000');
   socket.on('birdUpById', birdUpId);
-  collectPlayerData(bird); //bird.js
   socket.on('totalUsers', setUsers);
   socket.on('serverPipesUpdated', setNewServerPipes);
   socket.on('serverPlayersUpdated', setNewPlayers);
   socket.on('needPlayerData', setIdClient);
   socket.on('setPlayerStateDeath', setPlayerStateDeath);
-  // socket.on('setId', setIdClient);
+  bird.collectPlayerData(true);
+  socket.on('resetOtherPlayer', resetBirdForPlayer);
 }
 
 
@@ -23,25 +23,34 @@ function setNewServerPipes(data) {
 }
 function setNewPlayers(data) {
   serverPlayers = [];
-  console.log(data);
   for (var i = 0; i < data.length; i++) {
     // console.log(socket.id + ' ' + data[i].id);
     if (data[i].id !== socket.id) {
       serverPlayers[i] = setPlayerData(data[i]);
-      console.log(data[i]); //bird.js
     }
+  }
+  if (data.antiloop) {
+    bird.collectPlayerData(false);
   }
 }
 function setIdClient(data) {
 
   id = data;
   bird.id = id;
-  console.log(id);
+   //bird.js
 }
 function setPlayerStateDeath(data) {
   for (var i = 0; i < serverPlayers.length; i++) {
     if (serverPlayers[i].id === data.id) {
       serverPlayers[i].gameover = data.bool;
+      break;
+    }
+  }
+}
+function resetBirdForPlayer(id) {
+  for (var i = 0; i < serverPlayers.length; i++) {
+    if (serverPlayers[i].id === id) {
+      serverPlayers[i].resetBird();
       break;
     }
   }

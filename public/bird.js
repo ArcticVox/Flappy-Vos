@@ -62,33 +62,45 @@ function Bird(img, id) {
     }
     this.velocity = constrain(this.velocity, -this.lift, this.lift);
   }
-}
-
-
-function collectPlayerData(bird) {
-  var data = {
-    relativeLocation: bird.relativeLocation,
-    y: bird.y,
-    velocity: bird.velocity,
-    gameover: bird.gameover,
-    id: bird.id
+  this.resetBird = function() {
+    if (!this.isOtherPlayer) {
+      socket.emit('resetBird', this.id);
+    }
+    this.y = height/2;
+    this.gameover = false;
+    this.velocity = 0;
+    this.r = width * 0.05;
+    this.rotation = 0;
+    this.relativeLocation = 0;
+    this.currentLocation = 0;
+    this.img = voskop;
   }
-  socket.emit('newPlayer', data);
+  this.collectPlayerData = function(bool) {
+    var data = {
+      relativeLocation: this.relativeLocation,
+      currentLocation: this.currentLocation,
+      y: this.y,
+      velocity: this.velocity,
+      gameover: this.gameover,
+      id: this.id,
+      antiloop: bool
+    }
+    socket.emit('newPlayer', data);
+  }
 }
+
 
 function setPlayerData(data) {
   var playerWithSetData = new Bird(voskop, data.id);
-
-  if (playerWithSetData.relativeLocation != 0 || data.relativeLocation != 0) {
-    var crl = playerWithSetData.relativeLocation / data.relativeLocation; //converted relativeLocation
-    playerWithSetData.relativeLocation = data.relativeLocation * crl;
-  }
+  playerWithSetData.relativeLocation = data.currentLocation;
 
   var cy = playerWithSetData.y / data.y; //converted Y
   playerWithSetData.y = data.y * cy;
   if (playerWithSetData.velocity != 0 || data.velocity != 0) {
     var cv = playerWithSetData.velocity / data.velocity; //converted Velocity
     playerWithSetData.velocity = data.velocity * cv;
+  } else {
+    playerWithSetData.velocity = data.velocity;
   }
 
   playerWithSetData.gameover = data.gameover;
