@@ -8,13 +8,16 @@ var io = socket(server);
 
 var connected = 0;
 
-var serverPipes = [];
+var storedPipes = [];
 
 
 io.sockets.on('connection', newConnection);
 function newConnection(socket) {
   connected++;
   io.emit('totalUsers', connected);
+  if (storedPipes.length > 0) {
+    io.to(socket.id).emit('serverPipesUpdated', storedPipes);
+  }
   console.log('new connection!');
 
   socket.on('disconnect', stopConnection);
@@ -22,8 +25,8 @@ function newConnection(socket) {
 
 
   function addPipe(data) {
-    serverPipes.push(data);
-    io.broadcast.emit('serverPipesUpdated', serverPipes);
+    storedPipes.push(data);
+    io.emit('serverPipesUpdated', storedPipes);
   }
   function stopConnection() {
     connected--;

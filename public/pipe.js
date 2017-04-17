@@ -5,13 +5,11 @@ function Pipe(img) {
   this.x = width;
   this.w = width * 0.125;
   this.speed = (width * 0.0075);
-  this.highlight = false;
-  this.swap = false;
   this.passed = false;
   this.pipeImage = img;
   this.pipeImageHeight = (this.w / this.pipeImage.width) * this.pipeImage.height;
-  this.topcars = ceil(this.top / this.pipeImageHeight);
-  this.bottomcars = ceil(this.bottom / this.pipeImageHeight);
+  this.topimages = ceil(this.top / this.pipeImageHeight);
+  this.bottomimages = ceil(this.bottom / this.pipeImageHeight);
 
   this.hits = function(bird) {
     if (bird.y < this.top + bird.r || bird.y > height - this.bottom - bird.r) {
@@ -31,25 +29,21 @@ function Pipe(img) {
         pipePass.play();
       }
     }
-    this.highlight = false;
     return false;
   }
   this.show = function() {
 
-    // rect(this.x, 0, this.w, this.top);
-    for (var i = 0; i < this.topcars; i++) {
+    for (var i = 0; i < this.topimages; i++) {
       image(this.pipeImage, this.x, this.top - (this.pipeImageHeight * (i + 1)), this.w, this.pipeImageHeight);
     }
 
-    // rect(this.x, height - this.bottom, this.w, this.bottom);
-    for (var i = 0; i < this.bottomcars; i++) {
+    for (var i = 0; i < this.bottomimages; i++) {
       image(this.pipeImage, this.x, (height - this.bottom) + (this.pipeImageHeight*i), this.w, this.pipeImageHeight);
     }
 
   }
   this.update = function() {
     this.x -= this.speed;
-    // this.speed = map(score, 0, 50, 2, 20);
   }
 
   this.offscreen = function() {

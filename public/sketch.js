@@ -1,6 +1,6 @@
 var bird;
 var pipes = [];
-var serverPipes = [];
+var pipeInterval;
 var currentPipe = 0;
 var mobile = false;
 var textResponsive = [];
@@ -15,7 +15,7 @@ var canRestart = false;
 var endtop = 0;
 
 var volume = 0;
-
+var voskopSize = 0;
 var voskop;
 var voskopded;
 var voskopyey;
@@ -75,7 +75,11 @@ function setup() {
   bird = new Bird(voskop);
   // ai = new Ai();
   endtop = -(height * 0.4) - 100;
+  voskopSize = bird.r;
   socketConnection();
+  pipeInterval = setInterval(function() {
+    checkForNewPipes();
+  },2000);
 }
 
 function draw() {
@@ -88,6 +92,7 @@ function draw() {
       if (pipes[i].hits(bird)) {
         gameover = true;
         var rng = floor(random(dedSounds.length));
+        clearInterval(pipeInterval);
         if (dedSounds[rng].isLoaded()) {
           dedSounds[rng].play();
         }
@@ -103,21 +108,11 @@ function draw() {
   }
   bird.show();
 
-  if (!gameover && frameCount % 100 == 0) {
-    if (currentPipe < serverPipes.length - 1) {
-      pipes.push(serverPipes[currentPipe]);
-      currentPipe ++;
-    } else {
-      var newPipe = new Pipe(litEmoji);
-      pipes.push(newPipe);
-      socket.emit('newPipe', newPipe);
-      currentPipe ++;
-    }
-  }
+  // checkForNewPipes();
   if (gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);
     bird.img = voskopded;
-    bird.r *=2;
+    bird.r = voskopSize * 2;
     if (endtop > (height * 0.3) - 5) {
       canRestart = true;
     }
@@ -182,10 +177,56 @@ function touchStarted() {
 }
 function restart() {
   if (canRestart && gameover) {
-    gameover = false;
-    canRestart = false;
     pipes = [];
     bird = new Bird(voskop);
     score = 0;
+    currentPipe = 0;
+    gameover = false;
+    canRestart = false;
+    pipeInterval = setInterval(function() {
+      checkForNewPipes();
+    },2000);
   }
+}
+
+function checkForNewPipes() {
+  if (!gameover) {
+    console.log(currentPipe);
+    if (currentPipe < serverPipes.length - 1) {
+      pipes.push(serverPipes[currentPipe]);
+      currentPipe ++;
+    } else {
+      var newPipe = new Pipe(litEmoji);
+      pipes.push(newPipe);
+      collectPipeData(newPipe);
+      currentPipe ++;
+    }
+  }
+}
+
+function collectPipeData(pipe) {
+  var data = {
+    spacing: pipe.spacing,
+    top: pipe.top,
+    bottom: pipe.bottom,
+    w: pipe.w,
+    speed: pipe.speed,
+    pipeImageHeight: pipe.pipeImageHeight,
+    topimages: pipe.topimages,
+    bottomimages: pipe.bottomimages
+  }
+  socket.emit('newPipe', data);
+
+}
+function setPipeData(data) {
+  var pipeWithSetData = new Pipe(litEmoji);
+  pipeWithSetData.spacing = data.spacing
+  pipeWithSetData.top = data.top,
+  pipeWithSetData.bottom = data.bottom,
+  pipeWithSetData.w = data.w,
+  pipeWithSetData.speed = data.speed,
+  pipeWithSetData.pipeImageHeight = data.pipeImageHeight,
+  pipeWithSetData.topimages = data.topimages,
+  pipeWithSetData.bottomimages = data.bottomimages
+  return pipeWithSetData;
 }
