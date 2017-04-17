@@ -75,7 +75,7 @@ function Bird(img, id) {
     this.currentLocation = 0;
     this.img = voskop;
   }
-  this.collectPlayerData = function(bool) {
+  this.collectPlayerData = function() {
     var data = {
       relativeLocation: this.relativeLocation,
       currentLocation: this.currentLocation,
@@ -83,7 +83,6 @@ function Bird(img, id) {
       velocity: this.velocity,
       gameover: this.gameover,
       id: this.id,
-      antiloop: bool
     }
     socket.emit('newPlayer', data);
   }
