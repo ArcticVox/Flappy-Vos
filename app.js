@@ -10,20 +10,20 @@ var connected = 0;
 
 var serverPipes = [];
 
+
 io.sockets.on('connection', newConnection);
 function newConnection(socket) {
   connected++;
   io.emit('totalUsers', connected);
   console.log('new connection!');
-  for (var i = 0; i < 100; i++) {
-    serverPipes.push()
-  }
 
   socket.on('disconnect', stopConnection);
+  socket.on('newPipe', addPipe);
 
 
-  function addPipe() {
-
+  function addPipe(data) {
+    serverPipes.push(data);
+    io.broadcast.emit('serverPipesUpdated', serverPipes);
   }
   function stopConnection() {
     connected--;

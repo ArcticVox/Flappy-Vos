@@ -1,5 +1,7 @@
 var bird;
 var pipes = [];
+var serverPipes = [];
+var currentPipe = 0;
 var mobile = false;
 var textResponsive = [];
 var textResponsiveWH = [];
@@ -102,12 +104,20 @@ function draw() {
   bird.show();
 
   if (!gameover && frameCount % 100 == 0) {
-    pipes.push(new Pipe(litEmoji));
+    if (currentPipe < serverPipes.length - 1) {
+      pipes.push(serverPipes[currentPipe]);
+      currentPipe ++;
+    } else {
+      var newPipe = new Pipe(litEmoji);
+      pipes.push(newPipe);
+      socket.emit('newPipe', newPipe);
+      currentPipe ++;
+    }
   }
   if (gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);
     bird.img = voskopded;
-    bird.r = 40;
+    bird.r *=2;
     if (endtop > (height * 0.3) - 5) {
       canRestart = true;
     }
