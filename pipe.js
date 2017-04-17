@@ -23,7 +23,15 @@ function Pipe(spd, img) {
     if (!this.passed && bird.x > this.x + this.w) {
       this.passed = true;
       score ++;
-      // bird.img = voskopyey;
+
+
+      // vos change on score
+      // if (score % 2 === 0 ) {
+      //     bird.img = voskopemoji;
+      //   } else {
+      //     bird.img = voskopemoji2;
+      //   }
+
       if (score > highscore) {
         highscore = score;
       }

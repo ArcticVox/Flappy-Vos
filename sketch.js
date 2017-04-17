@@ -20,15 +20,25 @@ var voskopyey;
 var pipePass;
 var dedSounds = [];
 var vosSound = [];
+var voskoppie = [];
+
 var litEmoji;
 var scoreIcon;
 var gameoverMsg = "jammer man";
 function preload() {
   voskop = loadImage('assets/images/voskop.png');
   voskopded = loadImage('assets/images/voskopded.png');
+  voskopemoji = loadImage('assets/images/voskopemoji.png');
+  voskopemoji2 = loadImage('assets/images/voskopemoji2.png');
   voskopyey = loadImage('assets/images/voskopyey.png');
   litEmoji = loadImage('assets/images/lit.png');
   scoreIcon = loadImage('assets/images/voscoin.png');
+
+  voskoppie[0] = loadImage('assets/images/voskop.png');
+  voskoppie[1] = loadImage('assets/images/voskopyey.png');
+  voskoppie[2] = loadImage('assets/images/voskopemoji.png');
+  voskoppie[3] = loadImage('assets/images/voskopemoji2.png');
+  voskoppie[4] = loadImage('assets/images/voskopsnor.png');
 }
 
 
@@ -96,6 +106,7 @@ function draw() {
   }
   if (!gameover) {
     bird.update();
+
     // ai.control(bird, pipes);
   }
   bird.show();
@@ -105,7 +116,18 @@ function draw() {
   }
   if (gameover) {
     endtop = lerp(endtop, height * 0.3, 0.2);
-    bird.img = voskopded;
+
+    if (this.swap) {
+        // fill(255,0,0);
+        bird.img = voskopemoji;
+      } else {
+        // fill(0,0,255);
+        bird.img = voskopded;
+      }
+      if (frameCount % 15 == 0) {
+       this.swap = !this.swap;
+     }
+
     bird.r = 40;
     if (endtop > (height * 0.3) - 5) {
       canRestart = true;
@@ -174,5 +196,6 @@ function restart() {
     pipes = [];
     bird = new Bird(voskop);
     score = 0;
+    bird.img = voskoppie[floor(random(voskoppie.length))];
   }
 }
