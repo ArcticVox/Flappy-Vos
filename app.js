@@ -14,6 +14,7 @@ var connectedPlayers = [];
 
 io.sockets.on('connection', newConnection);
 function newConnection(socket) {
+  socket.broadcast.emit('requestData');
   if (storedPipes.length > 0) {
     io.to(socket.id).emit('serverPipesUpdated', storedPipes);
   }
@@ -38,7 +39,13 @@ function newConnection(socket) {
     storedPipes.push(data);
     io.emit('serverPipesUpdated', storedPipes);
   }
-
+  function modifyPlayerData(data) {
+    for (var i = 0; i < connectedPlayers.length; i++) {
+      if (connectedPlayers[i].id === data.id) {
+        connectedPlayers[i] = data;
+      }
+    }
+  }
   function addPlayer(data) {
     data.id = socket.id;
     connectedPlayers.push(data);

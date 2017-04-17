@@ -11,8 +11,9 @@ function socketConnection() {
   socket.on('serverPlayersUpdated', setNewPlayers);
   socket.on('needPlayerData', setIdClient);
   socket.on('setPlayerStateDeath', setPlayerStateDeath);
-  bird.collectPlayerData();
+
   socket.on('resetOtherPlayer', resetBirdForPlayer);
+  socket.on('requestData', collectData);
 }
 
 
@@ -35,6 +36,11 @@ function setIdClient(data) {
   id = data;
   bird.id = id;
    //bird.js
+  bird.collectPlayerData();
+}
+function collectData() {
+  var data = bird.collectPlayerData();
+  socket.emit('newPlayer', data);
 }
 function setPlayerStateDeath(data) {
   for (var i = 0; i < serverPlayers.length; i++) {

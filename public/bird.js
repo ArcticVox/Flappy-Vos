@@ -84,7 +84,7 @@ function Bird(img, id) {
       gameover: this.gameover,
       id: this.id,
     }
-    socket.emit('newPlayer', data);
+    return data;
   }
 }
 
