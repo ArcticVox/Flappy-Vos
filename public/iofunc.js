@@ -4,7 +4,7 @@ var serverPipes = [];
 var serverPlayers = [];
 var id = 'no-id';
 function socketConnection() {
-  socket = io.connect('http://192.168.1.8:3000');
+  socket = io.connect('http://192.168.1.10:3000');
   socket.on('birdUpById', birdUpId);
   socket.on('totalUsers', setUsers);
   socket.on('serverPipesUpdated', setNewServerPipes);

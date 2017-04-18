@@ -14,14 +14,14 @@ var connectedPlayers = [];
 
 io.sockets.on('connection', newConnection);
 function newConnection(socket) {
-  socket.broadcast.emit('requestData');
   if (storedPipes.length > 0) {
     io.to(socket.id).emit('serverPipesUpdated', storedPipes);
   }
+  socket.broadcast.emit('requestData');
   io.to(socket.id).emit('needPlayerData', socket.id);
-  // if (connectedPlayers.length > 0) {
-  //   io.to(socket.id).emit('serverPlayersUpdated', connectedPlayers);
-  // }
+  if (connectedPlayers.length > 0) {
+    io.to(socket.id).emit('serverPlayersUpdated', connectedPlayers);
+  }
   // socket.broadcast.to(socket.id).emit('setId', socket.id);
   connected++;
   io.emit('totalUsers', connected);
