@@ -95,6 +95,7 @@ function setPlayerData(data) {
 
   var cy = playerWithSetData.y / data.y; //converted Y
   playerWithSetData.y = data.y * cy;
+  console.log(cy);
   if (playerWithSetData.velocity != 0 || data.velocity != 0) {
     var cv = playerWithSetData.velocity / data.velocity; //converted Velocity
     playerWithSetData.velocity = data.velocity * cv;
@@ -104,5 +105,6 @@ function setPlayerData(data) {
 
   playerWithSetData.gameover = data.gameover;
   playerWithSetData.isOtherPlayer = true;
+  playerWithSetData.id = data.id;
   return playerWithSetData;
 }
