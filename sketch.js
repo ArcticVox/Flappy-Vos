@@ -57,14 +57,7 @@ function setup() {
 
 
 
-  button = createButton('start');
-  button.position(10, height-50);
-  button.mousePressed(start);
 
-  randomVosButton = createButton('Random Vos');
-  randomVosButton.position(10, height - 30);
-  randomVosButton.mousePressed(randomVos);
-  randomVosButton.class('startknop');
 
 
 
@@ -106,6 +99,16 @@ function setup() {
     textResponsiveWH[2] = width / 2;
     textResponsiveWH[3] = width / 2;
   }
+
+  button = createButton('start');
+  button.position(10, height-50);
+  button.mousePressed(start);
+
+  randomVosButton = createButton('Random Vos');
+  randomVosButton.position(10, height - 30);
+  randomVosButton.mousePressed(randomVos);
+  randomVosButton.class('startknop');
+
   bird = new Bird(voskop);
   // ai = new Ai();
   endtop = -(height * 0.4) - 100;
