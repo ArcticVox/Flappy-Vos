@@ -58,11 +58,11 @@ function setup() {
 
 
   button = createButton('start');
-  button.position(10, 10);
+  button.position(10, height-50);
   button.mousePressed(start);
 
   randomVosButton = createButton('Random Vos');
-  randomVosButton.position(10, 30);
+  randomVosButton.position(10, height - 30);
   randomVosButton.mousePressed(randomVos);
   randomVosButton.class('startknop');
 
@@ -192,7 +192,7 @@ function draw() {
 
   push();
   textSize(textResponsive[2]);
-  text('Highscore: ' + highscore, 4, 16);
+  text('Highscore: ' + highscore, 4, 32);
   pop();
   textSize(textResponsive[3]);
   var scoretw = textWidth(score.toString());
